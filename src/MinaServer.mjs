@@ -102,6 +102,12 @@ export class MinaServer {
                     }, {} )
                 break
             case 'server':
+                    result = Object
+                        .keys( this.#config['env']['validation'] )
+                        .reduce( ( acc, key, index ) => {
+                            acc[ key ] = process.env[ key ]
+                            return acc
+                        }, {} )
                 break
             default:
                 console.log( `The "environment" with the value "${environment}" key does not have any associated .env files.` )

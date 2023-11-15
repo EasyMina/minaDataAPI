@@ -8,9 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node server.js",
-    "start": "node server.js heroku --omit=dev",
-    "main": "node server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
