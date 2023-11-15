@@ -2,6 +2,8 @@ import { config } from './data/config.mjs'
 import express from 'express'
 import { printMessages } from './helpers/mixed.mjs'
 import fs from 'fs'
+import path from 'path'
+import moment from 'moment'
 
 
 export class MinaServer {
@@ -23,12 +25,18 @@ export class MinaServer {
         
         this.#state = {
             'environment': environment,
-            'secrets': {}
+            'secrets': {},
+            'privacy': ''
         }
 
         this.#state['secrets'] = this.#addSecrets()
         const [ m, c ] = this.#validateSecrets()
         printMessages( { 'messages': m, 'comments': c } )
+
+        this.#state['privacy'] = fs
+            .readFileSync( './public/privacy.html', 'utf-8' )
+            .replace( `{{DATE}}`, moment().format( 'YYYY-MM-DD' ) )
+            .replace( `{{EMAIL}}`, this.#state['secrets']['EMAIL'] )
 
         return this
     }
@@ -36,7 +44,6 @@ export class MinaServer {
 
     start() {
         this.#addServer()
-        this.#addApiKeyHeader()
         this.#addRoutes()
         this.#addCatchAllRoute()
 
@@ -150,35 +157,37 @@ export class MinaServer {
         return true
     }
 
-    
-    #addApiKeyHeader() {
-        this.#app.use(
-            ( req, res, next ) => {
-                const apiKey = req.get( this.#config['env']['validation']['API_KEY']['header'] )
-                console.log( 'sended', apiKey )
-                console.log( 'expected', this.#state['secrets']['API_KEY'] )
-
-                if( apiKey && apiKey === this.#state['secrets']['API_KEY'] ) {
-                    next()
-                } else {
-                    res
-                        .status( 401 )
-                        .json( { 'message': 'Invalid API Key' } )
-                }
-            }
-        )
-
-        return true
-    }
-
 
     #addRoutes() {
+        const addApiKeyHeader = ( req, res, next ) => {
+            const apiKey = req.get( this.#config['env']['validation']['API_KEY']['header'] )
+            console.log( 'sended', apiKey )
+            console.log( 'expected', this.#state['secrets']['API_KEY'] )
+    
+            if( apiKey && apiKey === this.#state['secrets']['API_KEY'] ) {
+                next()
+            } else {
+                res
+                    .status( 401 )
+                    .json( { 'message': 'Invalid API Key' } )
+            }
+        }
+
         this.#app.get(
             '/getRandomNumber', 
+            addApiKeyHeader,
             ( req, res ) => {
                 const randomNumber = Math.floor( Math.random() * 100 )
                 res.json( { 'number': randomNumber } )
             } 
+        )
+
+        this.#app.get(
+            '/privacy', 
+            ( req, res ) => {
+                res.setHeader('Content-Type', 'text/html');
+                res.send( this.#state['privacy'] ) 
+            }
         )
 
         return true
