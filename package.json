@@ -1,0 +1,18 @@
+{
+  "name": "3-minagpt-server",
+  "version": "1.0.0",
+  "description": "Welcome to the MinaData Server project, a powerful and efficient solution for interacting with the Mina Blockchain. This server enables developers to quickly and easily access and process blockchain data.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
