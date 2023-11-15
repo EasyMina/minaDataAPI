@@ -44,8 +44,10 @@ export class MinaServer {
 
     start() {
         this.#addServer()
+        this.#trackReponse()
         this.#addRoutes()
         this.#addCatchAllRoute()
+
 
         return true
     }
@@ -155,6 +157,15 @@ export class MinaServer {
         )
 
         return true
+    }
+
+
+    #trackReponse() {
+        this.#app.use((req, res, next) => {
+            console.log(`${new Date().toISOString()} - ${req.method} Request to ${req.url}`);
+            console.log('Headers:', req.headers);
+            next();
+          });
     }
 
 
