@@ -174,11 +174,11 @@ export class MinaServer {
         }
 
         this.#app.get(
-            '/getRandomNumber', 
-            addApiKeyHeader,
+            '/health', 
+          //  addApiKeyHeader,
             ( req, res ) => {
                 const randomNumber = Math.floor( Math.random() * 100 )
-                res.json( { 'number': randomNumber } )
+                res.json( { 'number': randomNumber, 'status': 'ok' } )
             } 
         )
 
