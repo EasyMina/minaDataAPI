@@ -1,5 +1,5 @@
 {
-  "name": "serverGPT",
+  "name": "server-gpt",
   "version": "1.0.0",
   "description": "Welcome to the MinaData Server project, a powerful and efficient solution for interacting with the Mina Blockchain. This server enables developers to quickly and easily access and process blockchain data.",
   "main": "server.mjs",
