@@ -9,6 +9,10 @@ const config = {
             'PORT': {
                 'regex': /^\d{2,4}$/,
                 'messages': 'Key "PORT" must be 2 to 4 digits long.'
+            },
+            'EMAIL': {
+                'regex': /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                'messages': 'Key "EMAIL" is not a valid email address.'
             }
         }
     },

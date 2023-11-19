@@ -1,6 +1,8 @@
 import { config } from './data/config.mjs'
-import express from 'express'
+import { MinaData } from 'minadata'
 import { printMessages } from './helpers/mixed.mjs'
+
+import express from 'express'
 import fs from 'fs'
 import path from 'path'
 import moment from 'moment'
@@ -53,6 +55,86 @@ export class MinaServer {
     }
 
 
+    getOpenAiSchema( { title, description, version, url } ) {
+        const minaData = new MinaData()
+        minaData.init( { 'network': 'berkeley' } )
+    
+        const struct = {
+            'openapi': '3.1.0',
+            'info': null,
+            'servers': [],
+            'paths': null,
+            'comments': {
+                'schemas': {}
+            }
+        }
+        
+        struct['info'] = [ 
+            [ 'title', title ],
+            [ 'description', description ],
+            [ 'version', version ]
+        ]
+            .reduce( ( acc, a, index ) => {
+                const [ key, value ] = a 
+                acc[ key ] = value
+                return acc
+            }, {} )
+        
+        struct['servers']
+            .push( { url } )
+        
+        struct['paths'] = minaData
+            .getPresets()
+            .reduce( ( acc, a, index ) => {
+                const key = `/{network}/${a}`
+                acc[ key ] = {
+                    'get': {
+                        'description': null,
+                        'operationId': null,
+                        'parameters': null,
+                        'deprecated': false
+                    }
+                }
+    
+                const preset = minaData.getPreset( { 'key': a } )
+                acc[ key ]['get']['description'] = preset['description']
+                acc[ key ]['get']['operationId'] = a
+                acc[ key ]['get']['parameters'] = Object
+                    .entries( preset['input']['variables'] )
+                    .reduce( ( abb, a, index ) => { 
+                        const [ k, v ] = a
+                        if( index === 0 ) {
+                            abb.push( {
+                                'name': 'network',
+                                'in': 'path',
+                                'required': true,
+                                'description': 'The network identifier.',
+                                'schema': {
+                                    'type': 'string',
+                                    'pattern': `^(${Object.keys( v['default'] ).join( '|' )})$`
+                                }
+                            } )
+                        }
+                        abb.push( {
+                            'name': k,
+                            'in': 'query',
+                            'description': `${v['description']} ${v['validation']['description']}'`,
+                            'required': a['required'],
+                            'schema': {
+                                'type': 'string',
+                                'pattern': v['validation']['regex'].source
+                            }
+                        } )
+    
+                        return abb
+                    }, [] )
+                return acc
+            }, {} )
+    
+        return struct
+    }
+
+
     #validateSecrets() {
         const messages = []
         const comments = []
@@ -69,7 +151,7 @@ export class MinaServer {
                 const test = this.#state['secrets'][ key ]
                     .match( this.#config['env']['validation'][ key ]['regex'] )
                 if( test === null ) {
-                    messages.push( `${this.#config['env']['validation'][ key ]['message']}`)
+                    messages.push( `${this.#config['env']['validation'][ key ]['message']}` )
                     return true
                 }
             } )
@@ -87,7 +169,7 @@ export class MinaServer {
                 messages.push( `Key "environemt" with value "${environment}" is not excepted as answer. Choose from ${JSON.stringify( environment )}.`)
             }
         } else {
-            messages.push( `Key "environment" is not type of "string".`)
+            messages.push( `Key "environment" is not type of "string".` )
         }
 
         return [  messages, comments ]
@@ -189,9 +271,37 @@ export class MinaServer {
           //  addApiKeyHeader,
             ( req, res ) => {
                 const randomNumber = Math.floor( Math.random() * 100 )
-                res.json( { 'number': randomNumber, 'health': 'ok' } )
+                res.json( { 'health': 'ok' } )
             } 
         )
+
+        const minaData = new MinaData()
+        minaData.init( { 'network': 'berkeley' } )
+        minaData
+            .getPresets()
+            .forEach( key => {
+                this.#app.get(
+                    `/:network/${key}`,
+                    addApiKeyHeader, 
+                    async ( req, res ) => {
+                        const { network } = req.params;
+                        const preset = key
+                        const { params, test } = req.query
+                        const userVars = req.query
+
+                        const [ m, c ] = minaData.validateGetData( 
+                            { preset, userVars, network } 
+                        )
+
+                        if( m.length !== 0 ) {
+                            res.json( { 'params': [ m, c ], 'status': 'Input error' } )
+                        } else {
+                            const result = await minaData.getData( { preset, userVars, network})
+                            res.json( { result, 'status': 'success' } )
+                        }
+                    } 
+                )
+            } )
 
         this.#app.get(
             '/getRandomNumber', 

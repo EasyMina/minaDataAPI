@@ -1,0 +1,397 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Learn Mina Blockchain API",
+    "description": "The Learn Mina Blockchain API, accessible at https://api.learnmina.com, offers key functionalities for querying the Mina blockchain, including account balances, transaction details, and block information.",
+    "version": "v0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.learnmina.com"
+    }
+  ],
+  "paths": {
+    "/{network}/accountBalance": {
+      "get": {
+        "description": "Retrieve current balance of given account.",
+        "operationId": "accountBalance",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "publicKey",
+            "in": "query",
+            "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/transactionsFromSender": {
+      "get": {
+        "description": "Retrieve transactions which was sended by given address",
+        "operationId": "transactionsFromSender",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "senderAddress",
+            "in": "query",
+            "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Set a limit on how many results will be shown. Allowed is only a number up to two digits long, which can be any value from 0 to 99.'",
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9]{0,2}"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Set the sorting type between ascending and descending. Allowed is only the specific text 'BLOCKHEIGHT_DESC' or 'BLOCKHEIGHT_ASC', representing sorting directions for block height.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^(BLOCKHEIGHT_DESC|BLOCKHEIGHT_ASC)$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/transactionsFromReceiver": {
+      "get": {
+        "description": "Retrieve ",
+        "operationId": "transactionsFromReceiver",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "receiverAddress",
+            "in": "query",
+            "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Set a limit on how many results will be shown. Allowed is only a number up to two digits long, which can be any value from 0 to 99.'",
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9]{0,2}"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Set the sorting type between ascending and descending. Allowed is only the specific text 'BLOCKHEIGHT_DESC' or 'BLOCKHEIGHT_ASC', representing sorting directions for block height.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^(BLOCKHEIGHT_DESC|BLOCKHEIGHT_ASC)$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/transactionsSenderToReceiver": {
+      "get": {
+        "description": "Retrieve transactions which took place between 2 given addresses",
+        "operationId": "transactionsSenderToReceiver",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "senderAddress",
+            "in": "query",
+            "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+            }
+          },
+          {
+            "name": "receiverAddress",
+            "in": "query",
+            "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Set a limit on how many results will be shown. Allowed is only a number up to two digits long, which can be any value from 0 to 99.'",
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9]{0,2}"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Set the sorting type between ascending and descending. Allowed is only the specific text 'BLOCKHEIGHT_DESC' or 'BLOCKHEIGHT_ASC', representing sorting directions for block height.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^(BLOCKHEIGHT_DESC|BLOCKHEIGHT_ASC)$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/transactionByHash": {
+      "get": {
+        "description": "Retrieve transaction data using a given transaction hash.",
+        "operationId": "transactionByHash",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "hash",
+            "in": "query",
+            "description": "Set the transaction hash string. Allowed is only a string consisting of 52 alphanumeric characters, including both letters and numbers.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9]{52}$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/latestBlockHeight": {
+      "get": {
+        "description": "Retrieve the most recent block height from the selected blockchain.",
+        "operationId": "latestBlockHeight",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "blockHeight_lt",
+            "in": "query",
+            "description": "Set the highest block height. Allowed is only a non-negative integer up to 9 digits long, not starting with any zeros unless it is the number zero itself.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^(0|[1-9]\\d{0,8})$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/latestBlockHeights": {
+      "get": {
+        "description": "Retrieve the most recent block height from the selected blockchain.",
+        "operationId": "latestBlockHeights",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Set a limit on how many results will be shown. Allowed is only a number up to two digits long, which can be any value from 0 to 99.'",
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9]{0,2}"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/transactionsFromMemo": {
+      "get": {
+        "description": "Retrieve transaction which memoHash has not a certain value, can be useful to find not empty memo fields.",
+        "operationId": "transactionsFromMemo",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "memoHash",
+            "in": "query",
+            "description": "Expects an encoded base58 string. Allowed are only strings that start with \"E4\" followed by exactly 51 characters from the base58 set, which excludes the numbers 0, and the letters O, I, and l.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^E4[1-9A-HJ-NP-Za-km-z]{51}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Set a limit on how many results will be shown. Allowed is only a number up to two digits long, which can be any value from 0 to 99.'",
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9]{0,2}"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Set the sorting type between ascending and descending. Allowed is only the specific text 'BLOCKHEIGHT_DESC' or 'BLOCKHEIGHT_ASC', representing sorting directions for block height.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^(BLOCKHEIGHT_DESC|BLOCKHEIGHT_ASC)$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/eventFromTransactionHash": {
+      "get": {
+        "description": "Retreive the event which is attached to an transaction",
+        "operationId": "eventFromTransactionHash",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "hash",
+            "in": "query",
+            "description": "Set the transaction hash string. Allowed is only a string consisting of 52 alphanumeric characters, including both letters and numbers.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9]{52}$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    },
+    "/{network}/eventsFromContract": {
+      "get": {
+        "description": "Retrieve the latest events from a Mina contract.",
+        "operationId": "eventsFromContract",
+        "parameters": [
+          {
+            "name": "network",
+            "in": "path",
+            "required": true,
+            "description": "The network identifier.",
+            "schema": {
+              "type": "string",
+              "pattern": "^(berkeley)$"
+            }
+          },
+          {
+            "name": "creator",
+            "in": "query",
+            "description": "Set the creator's address as the minimum address. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Set a limit on how many results will be shown. Allowed is only a number up to two digits long, which can be any value from 0 to 99.'",
+            "schema": {
+              "type": "string",
+              "pattern": "[0-9]{0,2}"
+            }
+          },
+          {
+            "name": "blockHeight_lt",
+            "in": "query",
+            "description": "highest block Allowed is only a non-negative integer up to 9 digits long, not starting with any zeros unless it is the number zero itself.'",
+            "schema": {
+              "type": "string",
+              "pattern": "^(0|[1-9]\\d{0,8})$"
+            }
+          }
+        ],
+        "deprecated": false
+      }
+    }
+  },
+  "comments": {
+    "schemas": {}
+  }
+}
