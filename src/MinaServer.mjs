@@ -147,7 +147,8 @@ export class MinaServer {
                     messages.push( `Key "${key}" is not found in .env` )
                     return true
                 } 
-
+console.log( '>>>', key )
+console.log( '>>>', this.#state['secrets'] )
                 const test = this.#state['secrets'][ key ]
                     .match( this.#config['env']['validation'][ key ]['regex'] )
                 if( test === null ) {
