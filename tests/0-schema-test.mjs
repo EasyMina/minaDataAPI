@@ -5,7 +5,7 @@ const minaServer = new MinaServer()
 
 const url = fs.readFileSync( '.env', 'utf-8' )
     .split( "\n" )
-    .filter( a => a.startsWith( 'URL') )
+    .filter( a => a.startsWith( 'URL' ) )
     .map( a => a.split( '=' )[ 1 ] )[ 0 ]
 
 const schema = minaServer.getOpenAiSchema( { 
