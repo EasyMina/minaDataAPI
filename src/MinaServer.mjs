@@ -281,7 +281,7 @@ export class MinaServer {
             .getPresets()
             .forEach( preset => {
                 this.#app.get(
-                    `/:network/${key}`,
+                    `/:network/${preset}`,
                     addApiKeyHeader, 
                     async ( req, res ) => {
                         try {
@@ -302,7 +302,6 @@ export class MinaServer {
                             console.log( 'e', e )
                             res.json( { e, 'status': 'error' } )
                         }
-
                     } 
                 )
             } )
