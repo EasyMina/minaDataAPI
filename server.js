@@ -4,9 +4,13 @@ async function main() {
     const minaServer = new MinaServer()
 
     try {
-        console.log( `Start server!` )
+        const version = 'v0.2'
+        console.log( `Start server! Version: ${version}` )
         minaServer
-            .init( { 'environment': 'server' } )
+            .init( { 
+                'environment': 'server', 
+                version
+            } )
             .start()
     } catch( e ) {
         console.log( `Error: ${e}` )

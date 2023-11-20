@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "minadata": "^0.0.82",
+    "minadata": "^0.0.9",
     "moment": "^2.29.4"
   }
 }

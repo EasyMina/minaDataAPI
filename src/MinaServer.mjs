@@ -21,12 +21,13 @@ export class MinaServer {
     }
 
 
-    init( { environment='developement' } ) {
+    init( { environment='developement', version='' } ) {
         const [ messages, comments ] = this.#validateInit( { environment } )
         printMessages( { messages, comments } )
         
         this.#state = {
             'environment': environment,
+            'version': version,
             'secrets': {},
             'privacy': ''
         }
@@ -271,7 +272,7 @@ export class MinaServer {
           //  addApiKeyHeader,
             ( req, res ) => {
                 const randomNumber = Math.floor( Math.random() * 100 )
-                res.json( { 'health': 'ok', 'version': 'v0.1' } )
+                res.json( { 'health': 'ok', 'version': this.#state['version'] } )
             } 
         )
 
