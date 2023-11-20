@@ -287,7 +287,8 @@ export class MinaServer {
                         try {
                             const { network } = req.params
                             const userVars = req.query
-    
+console.log( '>>>', network )
+console.log( '>>>', userVars )    
                             const [ m, c ] = minaData.validateGetData( 
                                 { preset, userVars, network } 
                             )
