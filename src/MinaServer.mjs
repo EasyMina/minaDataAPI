@@ -147,8 +147,7 @@ export class MinaServer {
                     messages.push( `Key "${key}" is not found in .env` )
                     return true
                 } 
-console.log( '>>>', key )
-console.log( '>>>', this.#state['secrets'] )
+
                 const test = this.#state['secrets'][ key ]
                     .match( this.#config['env']['validation'][ key ]['regex'] )
                 if( test === null ) {
@@ -280,26 +279,30 @@ console.log( '>>>', this.#state['secrets'] )
         minaData.init( { 'network': 'berkeley' } )
         minaData
             .getPresets()
-            .forEach( key => {
+            .forEach( preset => {
                 this.#app.get(
                     `/:network/${key}`,
                     addApiKeyHeader, 
                     async ( req, res ) => {
-                        const { network } = req.params;
-                        const preset = key
-                        const { params, test } = req.query
-                        const userVars = req.query
-
-                        const [ m, c ] = minaData.validateGetData( 
-                            { preset, userVars, network } 
-                        )
-
-                        if( m.length !== 0 ) {
-                            res.json( { 'params': [ m, c ], 'status': 'Input error' } )
-                        } else {
-                            const result = await minaData.getData( { preset, userVars, network})
-                            res.json( { result, 'status': 'success' } )
+                        try {
+                            const { network } = req.params
+                            const userVars = req.query
+    
+                            const [ m, c ] = minaData.validateGetData( 
+                                { preset, userVars, network } 
+                            )
+    
+                            if( m.length !== 0 ) {
+                                res.json( { 'params': [ m, c ], 'status': 'Input error' } )
+                            } else {
+                                const result = await minaData.getData( { preset, userVars, network } )
+                                res.json( { result, 'status': 'success' } )
+                            }
+                        } catch( e ) {
+                            console.log( 'e', e )
+                            res.json( { e, 'status': 'error' } )
                         }
+
                     } 
                 )
             } )
