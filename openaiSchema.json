@@ -2,18 +2,18 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Learn Mina Blockchain API",
-    "description": "The Learn Mina Blockchain API, accessible at https://api.learnmina.com, offers key functionalities for querying the Mina blockchain, including account balances, transaction details, and block information.",
+    "description": "The Learn Mina Blockchain API provides tools for querying the Mina blockchain, supporting operations such as retrieving account balances and transaction details, specifically for the 'berkeley' network. It allows for precise queries with various parameters, including public keys and block heights, and is accessible via https://api.learnmina.xyz.",
     "version": "v0.0.1"
   },
   "servers": [
     {
-      "url": "https://api.learnmina.com"
+      "url": "https://api.learnmina.xyz"
     }
   ],
   "paths": {
     "/{network}/accountBalance": {
       "get": {
-        "description": "Retrieve current balance of given account.",
+        "description": "Retrieve current balance of given account. As Network is ONLY allowed: 'berkeley'",
         "operationId": "accountBalance",
         "parameters": [
           {
@@ -32,7 +32,7 @@
             "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
             "schema": {
               "type": "string",
-              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{52}$"
             }
           }
         ],
@@ -41,7 +41,7 @@
     },
     "/{network}/transactionsFromSender": {
       "get": {
-        "description": "Retrieve transactions which was sended by given address",
+        "description": "Retrieve transactions which was sended by given address As Network is ONLY allowed: 'berkeley'",
         "operationId": "transactionsFromSender",
         "parameters": [
           {
@@ -60,7 +60,7 @@
             "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
             "schema": {
               "type": "string",
-              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{52}$"
             }
           },
           {
@@ -87,7 +87,7 @@
     },
     "/{network}/transactionsFromReceiver": {
       "get": {
-        "description": "Retrieve ",
+        "description": "Retrieve  As Network is ONLY allowed: 'berkeley'",
         "operationId": "transactionsFromReceiver",
         "parameters": [
           {
@@ -106,7 +106,7 @@
             "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
             "schema": {
               "type": "string",
-              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{52}$"
             }
           },
           {
@@ -133,7 +133,7 @@
     },
     "/{network}/transactionsSenderToReceiver": {
       "get": {
-        "description": "Retrieve transactions which took place between 2 given addresses",
+        "description": "Retrieve transactions which took place between 2 given addresses As Network is ONLY allowed: 'berkeley'",
         "operationId": "transactionsSenderToReceiver",
         "parameters": [
           {
@@ -152,7 +152,7 @@
             "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
             "schema": {
               "type": "string",
-              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{52}$"
             }
           },
           {
@@ -161,7 +161,7 @@
             "description": "Set the mina address public key. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
             "schema": {
               "type": "string",
-              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{52}$"
             }
           },
           {
@@ -188,7 +188,7 @@
     },
     "/{network}/transactionByHash": {
       "get": {
-        "description": "Retrieve transaction data using a given transaction hash.",
+        "description": "Retrieve transaction data using a given transaction hash. As Network is ONLY allowed: 'berkeley'",
         "operationId": "transactionByHash",
         "parameters": [
           {
@@ -216,7 +216,7 @@
     },
     "/{network}/latestBlockHeight": {
       "get": {
-        "description": "Retrieve the most recent block height from the selected blockchain.",
+        "description": "Retrieve the most recent block height from the selected blockchain. As Network is ONLY allowed: 'berkeley'",
         "operationId": "latestBlockHeight",
         "parameters": [
           {
@@ -244,7 +244,7 @@
     },
     "/{network}/latestBlockHeights": {
       "get": {
-        "description": "Retrieve the most recent block height from the selected blockchain.",
+        "description": "Retrieve the most recent block height from the selected blockchain. As Network is ONLY allowed: 'berkeley'",
         "operationId": "latestBlockHeights",
         "parameters": [
           {
@@ -272,7 +272,7 @@
     },
     "/{network}/transactionsFromMemo": {
       "get": {
-        "description": "Retrieve transaction which memoHash has not a certain value, can be useful to find not empty memo fields.",
+        "description": "Retrieve transaction which memoHash has not a certain value, can be useful to find not empty memo fields. As Network is ONLY allowed: 'berkeley'",
         "operationId": "transactionsFromMemo",
         "parameters": [
           {
@@ -318,7 +318,7 @@
     },
     "/{network}/eventFromTransactionHash": {
       "get": {
-        "description": "Retreive the event which is attached to an transaction",
+        "description": "Retreive the event which is attached to an transaction As Network is ONLY allowed: 'berkeley'",
         "operationId": "eventFromTransactionHash",
         "parameters": [
           {
@@ -346,7 +346,7 @@
     },
     "/{network}/eventsFromContract": {
       "get": {
-        "description": "Retrieve the latest events from a Mina contract.",
+        "description": "Retrieve the latest events from a Mina contract. As Network is ONLY allowed: 'berkeley'",
         "operationId": "eventsFromContract",
         "parameters": [
           {
@@ -365,7 +365,7 @@
             "description": "Set the creator's address as the minimum address. Allowed is only a string that starts with 'B62' followed by a sequence of base58 characters, with no specified maximum length.'",
             "schema": {
               "type": "string",
-              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{0,}$"
+              "pattern": "^B62[1-9A-HJ-NP-Za-km-z]{52}$"
             }
           },
           {

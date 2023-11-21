@@ -58,8 +58,8 @@ export class MinaServer {
 
     getOpenAiSchema( { title, description, version, url } ) {
         const minaData = new MinaData()
-        minaData.init( { 'network': 'berkeley' } )
-    
+        minaData.init( {} )
+
         const struct = {
             'openapi': '3.1.0',
             'info': null,
@@ -96,9 +96,16 @@ export class MinaServer {
                         'deprecated': false
                     }
                 }
-    
+
                 const preset = minaData.getPreset( { 'key': a } )
-                acc[ key ]['get']['description'] = preset['description']
+                const k = Object
+                    .keys( preset['input']['variables'][ Object.keys( preset['input']['variables'] )[ 0 ] ]['default'] )
+
+                let description = ''
+                description += `${preset['description']} `
+                description += `As Network is ONLY allowed: ${k.map( a => `'${a}'`).join( ',' )}`
+
+                acc[ key ]['get']['description'] = description
                 acc[ key ]['get']['operationId'] = a
                 acc[ key ]['get']['parameters'] = Object
                     .entries( preset['input']['variables'] )
@@ -293,14 +300,42 @@ export class MinaServer {
                             )
     
                             if( m.length !== 0 ) {
-                                res.json( { 'params': [ m, c ], 'status': 'Input error' } )
+
+                                const msgs = [ 
+                                    [ 'message', m ], 
+                                    [ 'comment', c ]
+                                ]
+                                    .reduce( ( acc, a, index ) => {
+                                        const [ key, values ] = a
+                                        !Object.hasOwn( acc, key ) ? acc[ key ] = [] : ''
+                                        values.forEach( value => acc[ key ].push( value ) )
+                                        return acc
+                                    }, {} )
+
+
+                                res.json( { 
+                                    'data': {},
+                                    'status': {
+                                        'code': 400,
+                                        'text': msgs
+                                    } 
+                                } )
                             } else {
                                 const result = await minaData.getData( { preset, userVars, network } )
-                                res.json( { result, 'status': 'success' } )
+                                res.json( { 
+                                    'result': result['data'], 
+                                    'status': result['status']
+                                } )
                             }
                         } catch( e ) {
                             console.log( 'e', e )
-                            res.json( { e, 'status': 'error' } )
+                            res.json( { 
+                                'data': {},
+                                'status': {
+                                    'code': 400,
+                                    'text': e
+                                } 
+                            } )
                         }
                     } 
                 )

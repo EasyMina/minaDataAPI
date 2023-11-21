@@ -4,7 +4,7 @@ async function main() {
     const minaServer = new MinaServer()
 
     try {
-        const version = 'v0.2'
+        const version = 'v0.3'
         console.log( `Start server! Version: ${version}` )
         minaServer
             .init( { 
