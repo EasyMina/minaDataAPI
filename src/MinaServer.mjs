@@ -287,9 +287,7 @@ export class MinaServer {
                     async ( req, res ) => {
                         try {
                             const { network } = req.params
-                            const userVars = req.query
-console.log( '>>>', network )
-console.log( '>>>', userVars )    
+                            const userVars = req.query  
                             const [ m, c ] = minaData.validateGetData( 
                                 { preset, userVars, network } 
                             )
