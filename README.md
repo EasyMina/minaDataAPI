@@ -92,7 +92,7 @@ minaServer
 
 ### start()
 
-Hier wird der server gestartet. Alle Einstellungen sind über ```.init( {} )``` erfolgt. 
+Start the server after settings via .init({}).
 
 **Example**: 
 ```js
@@ -107,7 +107,7 @@ minaServer
 
 ### getOpenAISchema
 
-Diese MEthode gibt eine Configurations Datei im OpenAI Schema Standard 3.1. mit dieser Datei lässt sich der Server mit einem Custom GPT verbinden. Und automatisiert abfragen durchführen.
+Generate an OpenAI Schema configuration file for Custom GPT integration.
 
 ```js
 const schema = minaServer.getOpenAiSchema( { 
@@ -122,7 +122,7 @@ const schema = minaServer.getOpenAiSchema( {
 
 ## Deployment
 
-Für eine schnelles Aufsetzen des Servers kann die Digital Ocean Apps Platform genutzt werden. Unter `.do/deploy.template.yaml` ist der deploy Vorgang hinterlegt. 
+Quickly deploy on a cost-effective $5 server using the Digital Ocean Apps Platform. You can find the deploy script here: `.do/deploy.template.yaml`
 
 [![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/easyMina/minaDataAPI/tree/main)
 
