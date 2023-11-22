@@ -10,6 +10,6 @@ spec:
       value: "your-password"
       type: SECRET
     - key: PORT
-      value: 8080
+      value: "8080"
     - key: EMAIL
       value: "your-email-for-privacy-policy@..."
