@@ -8,7 +8,7 @@ async function main() {
         console.log( `Start server! Version: ${version}` )
         minaServer
             .init( { 
-                'environment': 'server', 
+                'environment': 'staging', 
                 version
             } )
             .start()

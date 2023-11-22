@@ -23,7 +23,7 @@ const config = {
         'development': {
             'env': './.env'
         },
-        'server': {}
+        'staging': {}
     }
 } 
 
