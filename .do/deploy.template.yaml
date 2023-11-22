@@ -1,5 +1,5 @@
 spec:
-  name: minaDataAPI
+  name: "mina-data-api"
   services:
   - name: web
     git:
