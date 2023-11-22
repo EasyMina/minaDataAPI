@@ -140,7 +140,7 @@ export class MinaServer {
                     }, [] )
                 return acc
             }, {} )
-    
+
         return struct
     }
 
