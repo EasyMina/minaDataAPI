@@ -17,6 +17,9 @@ const config = {
         }
     },
     'environment': {
+        'quickstart': {
+            'env': './.env.example'
+        },
         'development': {
             'env': './.env'
         },

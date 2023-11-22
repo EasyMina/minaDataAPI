@@ -1,0 +1,15 @@
+spec:
+  name: minaDataAPI
+  services:
+  - name: web
+    git:
+      branch: main
+      repo_clone_url: https://github.com/EasyMina/minaDataAPI.git
+    envs:
+    - key: API_KEY
+      value: "your-password"
+      type: SECRET
+    - key: PORT
+      value: 8080
+    - key: EMAIL
+      value: "your-email-for-privacy-policy@..."

@@ -51,12 +51,14 @@ export class MinaServer {
         this.#addRoutes()
         this.#addCatchAllRoute()
 
-
         return true
     }
 
 
     getOpenAiSchema( { title, description, version, url } ) {
+        const [ m, c ] = this.#validateOpenAISchema( { title, description, version, url } )
+        printMessages( { 'messages': m, 'comments': c } )
+
         const minaData = new MinaData()
         minaData.init( {} )
 
@@ -184,33 +186,57 @@ export class MinaServer {
     }
 
 
+    #validateOpenAISchema( { title, description, version, url } ) {
+        const messages = []
+        const comments = []
+
+        const tmp = [
+            [ 'title', title ],
+            [ 'description', description ],
+            [ 'version', version ],
+            [ 'url', url ]
+        ]
+            .forEach( a => {
+                if( a[ 1 ] === undefined || a[ 1 ] === null ) {
+                    messages.push( `Key '${a[ 0 ]}' is missing.` )
+                } else if( typeof a[ 1 ] !== 'string' ) {
+                    messages.push( `Key '${a[ 0 ]} is not type of 'string''`)
+                }
+            } )
+
+        return [ messages, comments ]
+    }
+
+
     #addSecrets() {
         let result = {}
-        switch( this.#state['environment'] ) {
-            case 'development':
-                result = fs
-                    .readFileSync( this.#config['environment']['development']['env'], 'utf-8')
-                    .split( "\n" )
-                    .reduce( ( acc, a, index ) => {
-                        const str = a.trim()
-                        const [ key, value ] = str
-                            .split( '=' )
-                            .map( a => a.trim() )
-                        acc[ key ] = value
-                        return acc
-                    }, {} )
-                break
-            case 'server':
-                    result = Object
-                        .keys( this.#config['env']['validation'] )
-                        .reduce( ( acc, key, index ) => {
-                            acc[ key ] = process.env[ key ]
-                            return acc
-                        }, {} )
-                break
-            default:
-                console.log( `The "environment" with the value "${environment}" key does not have any associated .env files.` )
-                process.exit( 1 )    
+
+        if( 
+            this.#state['environment'] === 'development' ||
+            this.#state['environment'] === 'quickstart'
+        ) {
+            const key = this.#state['environment']
+            result = fs
+                .readFileSync( this.#config['environment'][ key ]['env'], 'utf-8' )
+                .split( "\n" )
+                .reduce( ( acc, a, index ) => {
+                    const str = a.trim()
+                    const [ key, value ] = str
+                        .split( '=' )
+                        .map( a => a.trim() )
+                    acc[ key ] = value
+                    return acc
+                }, {} )
+        } else if( this.#state['environment'] === 'staging' ) {
+            result = Object
+                .keys( this.#config['env']['validation'] )
+                .reduce( ( acc, key, index ) => {
+                    acc[ key ] = process.env[ key ]
+                    return acc
+                }, {} )
+        } else {
+            console.log( `The "environment" with the value "${environment}" key does not have any associated .env files.` )
+            process.exit( 1 ) 
         }
 
         return result
@@ -262,9 +288,6 @@ export class MinaServer {
     #addRoutes() {
         const addApiKeyHeader = ( req, res, next ) => {
             const apiKey = req.get( this.#config['env']['validation']['API_KEY']['header'] )
-            console.log( 'sended', apiKey )
-            console.log( 'expected', this.#state['secrets']['API_KEY'] )
-    
             if( apiKey && apiKey === this.#state['secrets']['API_KEY'] ) {
                 next()
             } else {
@@ -276,7 +299,7 @@ export class MinaServer {
 
         this.#app.get(
             '/health', 
-          //  addApiKeyHeader,
+            // addApiKeyHeader,
             ( req, res ) => {
                 const randomNumber = Math.floor( Math.random() * 100 )
                 res.json( { 'health': 'ok', 'version': this.#state['version'] } )
@@ -340,15 +363,6 @@ export class MinaServer {
                     } 
                 )
             } )
-
-        this.#app.get(
-            '/getRandomNumber', 
-            addApiKeyHeader,
-            ( req, res ) => {
-                const randomNumber = Math.floor( Math.random() * 100 )
-                res.json( { 'number': randomNumber, 'status': 'ok' } )
-            } 
-        )
 
         this.#app.get(
             '/privacy', 

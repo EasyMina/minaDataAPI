@@ -2,12 +2,12 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Learn Mina Blockchain API",
-    "description": "The Learn Mina Blockchain API provides tools for querying the Mina blockchain, supporting operations such as retrieving account balances and transaction details, specifically for the 'berkeley' network. It allows for precise queries with various parameters, including public keys and block heights, and is accessible via https://api.learnmina.xyz.",
-    "version": "v0.0.1"
+    "description": "The Learn Mina Blockchain API provides tools for querying the Mina blockchain, supporting operations such as retrieving account balances and transaction details, specifically for the 'berkeley' network. It allows for precise queries with various parameters, including public keys and block heights, and is accessible via https://api.easymina.xyz.",
+    "version": "v0.0.2"
   },
   "servers": [
     {
-      "url": "https://api.learnmina.xyz"
+      "url": "https://api.easymina.xyz"
     }
   ],
   "paths": {

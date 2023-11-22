@@ -1,58 +1,132 @@
-# MinaData Server
 
-Welcome to the MinaData Server project, a powerful and efficient solution for interacting with the Mina Blockchain. This server enables developers to quickly and easily access and process blockchain data.
+
+
+
+# Mina Data API
+
+MinaDataServer adds an API that works with OpenAI's Custom GPT. It automatically creates routes from MinaData, which you can see [here](https://github.com/EasyMina/minaData/blob/main/src/data/presets.mjs). Use an `x-api-key` in the header for security, set up with `.init({})`. It also has a `/health` route to check the server's status and a `/privacy` route, with details in `./public/privacy.html`.
+
+
+## Quickstart
+
+### Run Server
+
+```js
+import { MinaServer } from './src/MinaServer.mjs'
+const minaServer = new MinaServer()
+minaServer
+    .init( { 'environment': 'quickstart' } )
+    .start()
+```
+
+### Generate OpenAI Schema
+
+```js
+import { MinaServer } from './src/MinaServer.mjs'
+const minaServer = new MinaServer()
+const schema = minaServer.getOpenAiSchema( { 
+    'title': 'My Title',
+    'description': `My description`,
+    'version': 'v0.0.2',
+    'url': 'https://...'
+} )
+console.log( JSON.stringify( schema, null, 4 ) )
+```
+
 
 ## Table of Contents
 
-- [MinaData Server](#minadata-server)
+- [Mina Data API](#mina-data-api)
+  - [Quickstart](#quickstart)
+    - [Run Server](#run-server)
+    - [Generate OpenAI Schema](#generate-openai-schema)
   - [Table of Contents](#table-of-contents)
-  - [Feature Overview](#feature-overview)
-  - [Prerequisites](#prerequisites)
-  - [Quick Start](#quick-start)
-    - [Installation](#installation)
-    - [Configuration](#configuration)
-    - [Starting the Server](#starting-the-server)
+  - [Features](#features)
+  - [Methods](#methods)
+    - [init( {} )](#init--)
+    - [start()](#start)
+    - [getOpenAISchema](#getopenaischema)
+  - [Deployment](#deployment)
   - [License](#license)
 
-## Feature Overview
+## Features
 
-- Fast access to Mina Blockchain data
-- Simple API for queries
-- Support for common programming languages
-- High security and reliability
+- Add `/{network}/{presets}` routes. Autogenerate all available routes from `minaData`. See [...minaData/src/data/presets.mjs](https://github.com/EasyMina/minaData/blob/main/src/data/presets.mjs) for more Informations.
+- Add Header Api Key through key `x-api-key`. To set secrets see `.init({})`
+- OpenAI Schema generator, for Custom GPT integration.
+- Add `/health` route
+- Add `/privacy` route. You can find the template here: `./public/privacy.html`
 
-## Prerequisites
 
-- Node.js v12.x or higher
-- npm or yarn
-- Access to a Mina Blockchain node
+## Methods
+Public methods include init, start, and getOpenAISchema.
 
-## Quick Start
 
-### Installation
+### init( {} )
 
-```bash
-git clone https://github.com/YourRepo/minadata-server.git
-cd minadata-server
-npm install
+The following key/value pairs are editable:
+
+| Name         | Description                                       | Required | Default        | Type                                     |
+|--------------|---------------------------------------------------|----------|----------------|------------------------------------------|
+| environment  | Is needed to locate the environment variables. For 'developement' it expect a file on `./.env`. For `staging` search in `process.env`    | Yes      | `development`  | `string` [ 'development', 'staging' ] |
+| version      | The version number of the application             | No       | `` (empty string) | string                                   |
+
+For informations you can find under `./src/data/config.mjs`
+
+**Returns**: 
+```js
+return this
 ```
 
-### Configuration
 
-Edit the `config.json` file to set your individual settings.
+**Example**: 
+```js
+const { MinaServer } = await import( './src/MinaServer.mjs' )
+const minaServer = new MinaServer()
+minaServer
+    .init( { 'environment': 'quickstart', 'version': 'v0.2' } )
+    .start()
 
-```json
-{
-  "minaNode": "http://YourMinaNode:Port"
-}
 ```
 
-### Starting the Server
 
-```bash
-npm start
+### start()
+
+Hier wird der server gestartet. Alle Einstellungen sind über ```.init( {} )``` erfolgt. 
+
+**Example**: 
+```js
+const { MinaServer } = await import( './src/MinaServer.mjs' )
+const minaServer = new MinaServer()
+minaServer
+    .init( { 'environment': 'quickstart', 'version': 'v0.2' } )
+    .start()
+
 ```
+
+
+### getOpenAISchema
+
+Diese MEthode gibt eine Configurations Datei im OpenAI Schema Standard 3.1. mit dieser Datei lässt sich der Server mit einem Custom GPT verbinden. Und automatisiert abfragen durchführen.
+
+```js
+const schema = minaServer.getOpenAiSchema( { 
+    'title': 'Title',
+    'description': `Description`,
+    'version': '',
+    'url': 'https://...'
+} )
+```
+
+
+
+## Deployment
+
+Für eine schnelles Aufsetzen des Servers kann die Digital Ocean Apps Platform genutzt werden. Unter `.do/deploy.template.yaml` ist der deploy Vorgang hinterlegt. 
+
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/easyMina/minaDataAPI/tree/main)
+
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [Apache 2.0](LICENSE).
