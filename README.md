@@ -1,5 +1,4 @@
-
-
+![CircleCI](https://img.shields.io/circleci/build/github/EasyMina/minaDataAPI/main)
 
 
 # Mina Data API
